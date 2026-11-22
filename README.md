@@ -161,4 +161,5 @@ Then open `dashboard/cart_abandonment.pbix` and refresh the data source paths.
 
 ## 13. About me
 
-**[YOUR NAME]** · aspiring data analyst · [LinkedIn URL] · [email]
+**Taranum M Patel** · aspiring data analyst · 
+www.linkedin.com/in/taranum-patel · taranum14patel@gmail.com
