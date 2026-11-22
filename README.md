@@ -38,11 +38,14 @@ Targeted levers: each 1-point drop in electronics abandonment is worth about 1.9
 
 Three Power BI pages: **Overview**, **Where and when** and **Recovery what-if**. The method, definitions, data issues and limitations are documented in this README.
 
-![Overview](dashboard/screenshots/01_overview.png)
-![Where and when](dashboard/screenshots/02_where_and_when.png)
-![Recovery what-if](dashboard/screenshots/03_recovery_what_if.png)
+<img width="1377" height="733" alt="01_overview png" src="https://github.com/user-attachments/assets/a73c09f3-74f0-425c-84e1-4f849fcd61f4" />
+<img width="1377" height="732" alt="02_where_and_when png" src="https://github.com/user-attachments/assets/70d718ce-2c9d-49b7-b8c1-8f01fe1be8fd" />
 
-Files: [`dashboard/cart_abandonment.pbix`](dashboard/cart_abandonment.pbix) · [PDF export](dashboard/cart_abandonment.pdf)
+<img width="1375" height="745" alt="03_recovery_what_if png" src="https://github.com/user-attachments/assets/5ebd826c-ace9-4339-8d0f-bea09c871d2d" />
+
+
+
+
 
 ## 4. Recommendations
 
