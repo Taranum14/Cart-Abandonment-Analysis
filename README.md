@@ -1,3 +1,4 @@
+
 # Cart Abandonment Analysis: where an online store loses its money
 
 > **44% of items added to a cart are never bought, worth about 92.6M in cart value. Electronics alone holds 82.5% of it.**
@@ -5,6 +6,7 @@
 
 **Skills shown:** SQL (CTEs, joins, CASE logic) · Python · DuckDB on multi-GB data · data cleaning and validation · funnel analysis · metric definition · Power BI and DAX · business recommendations
 
+<img width="1377" height="733" alt="01_overview png" src="https://github.com/user-attachments/assets/80f29c37-bd5e-4c46-8bb2-e12607c9b255" />
 ---
 
 ## 1. The business question
