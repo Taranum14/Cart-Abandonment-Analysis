@@ -11,7 +11,8 @@ End-to-end analysis of 628K cart items from a multi-category online store (Octob
 ![SQL](https://img.shields.io/badge/SQL-analysis-336791)
 ![Power BI](https://img.shields.io/badge/Power%20BI-dashboard-F2C811?logo=powerbi&logoColor=black)
 
-![Overview dashboard page](dashboard/screenshots/01_overview.png)
+<img width="1377" height="733" alt="01_overview png" src="https://github.com/user-attachments/assets/721dbf51-506f-4292-8dc9-0c2cf5123740" />
+
 
 **Quick links:** [Key findings](#2-key-findings) · [Recommendations](#3-recommendations) · [Dashboard](#4-dashboard) · [Data issues found](#8-data-issues-found-and-fixed) · [How to reproduce](#12-how-to-reproduce)
 
@@ -75,8 +76,10 @@ Three Power BI pages:
 - **Where and when:** abandonment by category, price band and hour.
 - **Recovery what-if:** what 5%, 10% and 15% recovery would be worth.
 
-![Where and when](dashboard/screenshots/02_where_and_when.png)
-![Recovery what-if](dashboard/screenshots/03_recovery_what_if.png)
+<img width="1377" height="732" alt="02_where_and_when png" src="https://github.com/user-attachments/assets/7e3ba630-0f2b-4076-8746-96a1d1a33811" />
+
+<img width="1375" height="745" alt="03_recovery_what_if png" src="https://github.com/user-attachments/assets/7c5acbcc-a4fa-4dc2-8a8a-0c36e04d84f9" />
+
 
 Files: [`dashboard/cart_abandonment.pbix`](dashboard/cart_abandonment.pbix) · [PDF export](dashboard/cart_abandonment.pdf) · [DAX measures](dashboard/dax_measures.md)
 
