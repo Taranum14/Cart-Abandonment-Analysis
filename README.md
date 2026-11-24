@@ -1,11 +1,31 @@
-# Cart Abandonment Analysis: where an online store loses its money
+# Cart Abandonment Analysis
 
-> **44% of items added to a cart are never bought, worth about 92.6M in cart value. Electronics alone holds 82.5% of it.**
-> End-to-end analysis of 628K cart items from a multi-category online store, built with Python, DuckDB, SQL and Power BI.
+**44% of cart items are never bought, and electronics holds 82.5% of the value at risk (about 92.6M currency units).**
 
-**Skills shown:** SQL (CTEs, joins, CASE logic) · Python · DuckDB on multi-GB data · data cleaning and validation · funnel analysis · metric definition · Power BI and DAX · business recommendations
+End-to-end analysis of 628K cart items from a multi-category online store (October 2019), built with Python, DuckDB, SQL and Power BI.
 
-<img width="1377" height="733" alt="01_overview png" src="https://github.com/user-attachments/assets/0541bd4d-f2b7-4cc1-b5f4-3216d122a686" />
+> **Why 44.0% and not 51.5%?** 51.5% counts an item as abandoned if it was not bought in the same visit. 44.0% also counts later purchases by the same user, so it is the fairer number and the one used throughout this project.
+
+![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
+![DuckDB](https://img.shields.io/badge/DuckDB-SQL-FFF000?logo=duckdb&logoColor=black)
+![SQL](https://img.shields.io/badge/SQL-analysis-336791)
+![Power BI](https://img.shields.io/badge/Power%20BI-dashboard-F2C811?logo=powerbi&logoColor=black)
+
+![Overview dashboard page](dashboard/screenshots/01_overview.png)
+
+**Quick links:** [Key findings](#2-key-findings) · [Recommendations](#3-recommendations) · [Dashboard](#4-dashboard) · [Data issues found](#8-data-issues-found-and-fixed) · [How to reproduce](#12-how-to-reproduce)
+
+| At a glance | |
+|---|---|
+| **Data** | One month (October 2019) of shopper clicks from a multi-category store: 9.24M sessions viewed products, 628K items were added to carts |
+| **Tools** | Python, DuckDB, SQL, Power BI, DAX |
+| **Output** | A three-page dashboard, three recommendations, and recovery scenarios |
+| **Skills shown** | SQL (CTEs, joins, CASE logic) · multi-GB data handling · data cleaning and validation · funnel analysis · metric definition · DAX · business recommendations |
+
+**60-second summary**
+- **Problem:** a large share of carted items never turn into sales.
+- **Finding:** 44% are never bought. Electronics holds 82.5% of the value at risk, cheap items under 20 leak most (59.5%), and mid-afternoon abandonment is higher.
+- **Action:** retarget high-value electronics carts first, A/B test a nudge in the afternoon window, and investigate cheap items before spending on discounts.
 
 ---
 
@@ -17,46 +37,55 @@ An online store sees many shoppers add items to their cart and then leave withou
 
 ## 2. Key findings
 
+All money figures are in the dataset's own currency units. The source does not state a currency, so "92.6M" means 92.6 million of those units.
+
 | # | Finding | Number |
 |---|---|---|
 | 1 | Share of cart items never bought | **44.0%** (276,061 of 628,109 items) |
-| 2 | Cart value at risk | **about 92.6M** (dataset currency units) |
+| 2 | Cart value at risk | **about 92.6M currency units** |
 | 3 | Where the money sits | **Electronics: 76.4M, 82.5% of the total** |
 | 4 | Cheap items leak most | **Under 20: 59.5%** abandoned, against 40.9% for items priced 100 to 300 |
 | 5 | Mid-afternoon rise | **About 49% at 15:00 to 18:00 UTC**, against about 41% in the morning (the highest among busy hours) |
 | 6 | Funnel | 6.2% of viewing sessions add to cart; 50.9% of cart sessions also include a purchase |
 
+**Strict against final abandonment:** the same-visit (strict) view gives 51.5% and the final view gives 44.0%. The 7.5-point gap is roughly 47K items that people carted in one visit and bought in a later one.
+
 **What recovery could be worth** (scenarios, not forecasts; cart value, not profit)
 
-| Share of the 92.6M recovered | Value |
+| Share of the 92.6M recovered | Value (currency units) |
 |---|---|
 | 5% | about 4.6M |
 | 10% | about 9.3M |
 | 15% | about 13.9M |
 
-Targeted levers: each 1-point drop in electronics abandonment is worth about 1.9M (76.4M at risk ÷ 41.0% abandonment rate). Bringing the 15:00 to 18:00 UTC window down to the morning rate is worth roughly 3M. This is a rough estimate: carts in the window × the gap in abandonment rate × the average item price.
+## 3. Recommendations
 
-## 3. Dashboard
+| # | Recommendation | Evidence | Size of the prize | How to measure it |
+|---|---|---|---|---|
+| 1 | **Retarget high-value electronics carts first.** Use reminder emails or retargeting ads for carts above a value threshold. | 82.5% of the value at risk (76.4M of 92.6M) is in electronics, where 41.0% of carts are abandoned. | Each 1-point drop in electronics abandonment is worth about 1.9M (76.4M ÷ 41.0 points). | Electronics abandonment rate (41.0% today) |
+| 2 | **A/B test a timed nudge at 15:00 to 18:00 UTC.** Try a reminder or small incentive inside that window only. | Abandonment is about 49% in that window against about 41% in the morning, across 113K carts. | About 3M if the window matched the morning rate (113K carts × about 8-point gap × average abandoned-item value of about 335). A rough estimate. | Abandonment rate for carts started in the window |
+| 3 | **Test quick checkout or a bundle offer for cheap items** instead of a discount. | Items under 20 are abandoned 59.5% of the time, against 40.9% for items priced 100 to 300. | Not sized: the reason is unknown, so this is a hypothesis to test. | Abandonment rate for items under 20 |
 
-Three Power BI pages: **Overview**, **Where and when** and **Recovery what-if**. The method, definitions, data issues and limitations are documented in this README.
+**How to prioritise:** start with recommendation 1, because it is where the money is. Recommendation 2 is cheap to test. Recommendation 3 needs investigation first, because the data shows where people leave, not why.
 
-<img width="1377" height="733" alt="01_overview png" src="https://github.com/user-attachments/assets/441486da-f2b5-4537-bf85-7ed93918f24f" />
-<img width="1375" height="745" alt="03_recovery_what_if png" src="https://github.com/user-attachments/assets/5ed9691a-e5e6-4a70-9796-61d0002734e0" />
-<img width="1377" height="732" alt="02_where_and_when png" src="https://github.com/user-attachments/assets/935ac2b0-659c-4002-8c1e-70c698a8c488" />
+## 4. Dashboard
 
+Three Power BI pages:
+- **Overview** (shown at the top): headline abandonment, value at risk and the funnel.
+- **Where and when:** abandonment by category, price band and hour.
+- **Recovery what-if:** what 5%, 10% and 15% recovery would be worth.
 
+![Where and when](dashboard/screenshots/02_where_and_when.png)
+![Recovery what-if](dashboard/screenshots/03_recovery_what_if.png)
 
-## 4. Recommendations
-
-1. **Retarget high-value electronics carts first.** 82.5% of the money at risk sits there, so reminder emails or retargeting ads for carts above a value threshold have the largest payoff. Track: electronics abandonment rate (41.0% today).
-2. **A/B test a timed nudge at 15:00 to 18:00 UTC.** Abandonment is about 49% in that window against 41% in the morning, the highest among busy hours. Track: abandonment rate for carts started in the window.
-3. **Treat cheap items as impulse adds.** Items under 20 are abandoned 59.5% of the time. Try quick checkout or a bundle offer instead of a discount. This is a hypothesis: the data shows where people leave, not why, so it needs testing.
+Files: [`dashboard/cart_abandonment.pbix`](dashboard/cart_abandonment.pbix) · [PDF export](dashboard/cart_abandonment.pdf) · [DAX measures](dashboard/dax_measures.md)
 
 ## 5. Data
 
-- **Source:** [eCommerce behavior data from a multi-category store](https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store) (Kaggle, `mkechinov`).
-- **Used:** one month of events (**[MONTH YEAR]**), several GB of raw CSV.
+- **Source:** [eCommerce behavior data from a multi-category store](https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store) (Kaggle, `mkechinov`). Data credit goes to the dataset's author.
+- **Used:** one month of events (**October 2019**, file `2019-Oct.csv`), several GB of raw CSV.
 - **Columns:** `event_time`, `event_type` (view, cart, remove_from_cart, purchase), `product_id`, `category_code`, `brand`, `price`, `user_id`, `user_session`.
+- **Currency:** the dataset does not state one, so money figures are in the dataset's own currency units.
 - The raw file is not in this repo because of its size. See [`data/raw/PUT_DATA_HERE.txt`](data/raw/PUT_DATA_HERE.txt) to download it. Check the dataset's licence on Kaggle before reusing it.
 
 ## 6. Approach
@@ -103,7 +132,7 @@ I report both because shoppers often cart in one visit and buy in a later one. T
 
 - One month of one store, so results may not generalise.
 - Carts made late in the month may still be bought after the data ends, so abandonment is slightly overstated.
-- Prices are in the dataset's own currency, which is not stated.
+- Prices are in the dataset's own currency units, and the source does not say which currency.
 - Hours are in UTC, and the store's location is unknown.
 - Hours 0 and 1 have the highest rates (about 53%) but fewer than 6K carts each, so the afternoon is the highest among hours with real volume.
 - The data shows when and where people leave, not why. The price and time findings are hypotheses to test.
@@ -147,9 +176,9 @@ git clone https://github.com/Taranum14/Cart-Abandonment-Analysis.git
 cd Cart-Abandonment-Analysis
 pip install -r requirements.txt
 
-# 1. download one month of data from Kaggle into data/raw/ (see PUT_DATA_HERE.txt)
+# 1. download 2019-Oct.csv from Kaggle into data/raw/ (see PUT_DATA_HERE.txt)
 # 2. clean and load it
-python notebooks/01_load_and_clean.py data/raw/<FILE-NAME>.csv
+python notebooks/01_load_and_clean.py data/raw/2019-Oct.csv
 
 # 3. run the analysis; results land in data/processed/results/
 python notebooks/run_sql.py sql/02_funnel.sql

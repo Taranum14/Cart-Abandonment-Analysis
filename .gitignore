@@ -1,5 +1,9 @@
-data/raw/
+data/raw/*.csv
 data/processed/*.duckdb
 __pycache__/
 .ipynb_checkpoints/
 .DS_Store
+!data/raw/PUT_DATA_HERE.txt
+*.duckdb
+*.duckdb.wal
+*.parquet

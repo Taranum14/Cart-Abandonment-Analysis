@@ -1,0 +1,19 @@
+HOW TO GET THE DATA
+
+This project uses the Kaggle dataset:
+"eCommerce behavior data from a multi-category store" (by mkechinov)
+https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store
+
+Steps
+1. Sign in to Kaggle (a free account works) and open the link above.
+2. Download the file for the month used in this project: October 2019
+   (file name: 2019-Oct.csv). The file is several GB.
+3. Put the CSV in this folder: data/raw/
+4. Run from the project root:
+   python notebooks/01_load_and_clean.py data/raw/2019-Oct.csv
+
+Notes
+- The raw CSV is NOT stored in this repo because of its size. The .gitignore keeps it out of Git.
+- Check the dataset's licence and terms on the Kaggle page before reusing or sharing the data.
+- To test the pipeline without the real data, run notebooks/00_make_sample_data.py.
+  It creates a tiny fake dataset. No results in this project use it.
